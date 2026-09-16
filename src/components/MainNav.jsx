@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { Link, NavLink } from 'react-router-dom'
 import useEcomStore from '../store/ecom-store'
 import { ChevronDown } from "lucide-react";
+
+import logo from '../../../imges/Weeruch Logo.jpg'
 function MainNav() {
     // Javascript
     const carts = useEcomStore((s)=> s.carts);
@@ -26,9 +28,18 @@ function MainNav() {
                 <div className='flex items-center gap-6'>
 
 
-                    <Link to={'/'} 
-                    className='text-2xl font-bold '>
-                        Weeruch
+                  <Link to="/">
+                        <img
+                            src={logo}
+                            alt="Weeruch Logo"
+                            className="
+                                w-[55px] h-[55px]
+                                rounded-full
+                                object-cover
+                                border-2 border-red-600
+                                shadow-md
+                            "
+                        />
                     </Link>
 
 

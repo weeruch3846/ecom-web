@@ -32,91 +32,91 @@ const ListCart = () => {
 
 
     return (
-    <div className='bg-gray-100 rounded-sm p-4'>
+    <div className='max-w-6xl mx-auto p-4'>
         {/* Header */}
-        <div className='flex gap-4 mb-4'>
-            <ListCheck size={36}/>
-            <p className='text-2xl font-bold'>รายการสินค้า {cart.length} รายการ</p>
+        <div className='flex items-center gap-3 mb-5'>
+            <div className='p-2.5 bg-indigo-50 rounded-xl text-indigo-600'>
+                <ListCheck size={24}/>
+            </div>
+            <div>
+                <p className='text-xl font-semibold text-slate-800'>รายการสินค้าในตะกร้า</p>
+                <p className='text-sm text-slate-400'>{cart.length} รายการ</p>
+            </div>
         </div>
 
         {/* List */}
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-5 items-start'>
             {/* Left */}
-            <div className='col-span-2'>
+            <div className='md:col-span-2 flex flex-col gap-3'>
             {/* Card */}
 
-            {cart.map((item,index)=> (
-            <div key={index} 
-            className='bg-white p-2 rounded-md shadow-md mb-2'>
-                {/* Row 1 */}
-                <div className='flex justify-between mb-2'>
-                        {/* Left */}
-                        <div className='flex gap-2 items-center'>
-
-
-                            {
-                                item.images && item.images.length > 0
-                                ? <img 
-                                className='w-16 h-16 rounded-md'
-                                src={item.images[0].url} />
-                                : <div className='w-16 h-16 bg-gray-200 
-                                rounded-md flex text-center items-center'>
-                                   No Image 
-                            </div>
-                            }
-                            
-                            <div >
-                                <p className='font-bold'>{item.title}</p>
-                                <p className='text-sm'>{numberFormat(item.price)} X {item.count}</p>
-                            </div>
-                        </div>
-                        {/* Right */}
-                        <div >
-                              <div className='font-bold text-blue-500'>
-                        {numberFormat(item.price * item.count)}
-                    </div>
-                        </div>
+            {cart.length === 0 && (
+                <div className='bg-white border border-slate-200 rounded-2xl shadow-sm p-10 text-center text-slate-400 text-sm'>
+                    ยังไม่มีสินค้าในตะกร้า
                 </div>
+            )}
 
-            </div> 
+            {cart.map((item,index)=> (
+            <div key={index}
+            className='bg-white border border-slate-200 rounded-2xl shadow-sm p-3 flex items-center justify-between'>
+                {/* Left */}
+                <div className='flex gap-3 items-center'>
+                    {
+                        item.images && item.images.length > 0
+                        ? <img
+                        className='w-16 h-16 object-cover rounded-lg border border-slate-100'
+                        src={item.images[0].url} />
+                        : <div className='w-16 h-16 bg-slate-100 border border-slate-200
+                        rounded-lg flex items-center justify-center text-center text-[10px] text-slate-400'>
+                           No Image
+                        </div>
+                    }
+
+                    <div>
+                        <p className='font-medium text-slate-800'>{item.title}</p>
+                        <p className='text-sm text-slate-400 mt-0.5'>{numberFormat(item.price)} x {item.count}</p>
+                    </div>
+                </div>
+                {/* Right */}
+                <div className='font-semibold text-indigo-600 whitespace-nowrap'>
+                    {numberFormat(item.price * item.count)}
+                </div>
+            </div>
             ))}
             </div>
 
             {/* Right */}
-            <div className='bg-white p-4 rounded-md shadow-md space-y-4'>
-                <p className='text-2xl font-bold'>ยอดรวม</p>
-                <div className='flex justify-between'>
-                    <span>รวมสุทธิ</span>
-                    <span className='text-2xl font-bold'>{numberFormat(getTotalPrice())}</span>
+            <div className='bg-white border border-slate-200 rounded-2xl shadow-sm p-5 space-y-4'>
+                <p className='text-lg font-semibold text-slate-800'>สรุปยอดสั่งซื้อ</p>
+
+                <div className='flex justify-between items-center pt-1 border-t border-slate-100'>
+                    <span className='text-sm text-slate-500'>รวมสุทธิ</span>
+                    <span className='text-xl font-semibold text-slate-800'>{numberFormat(getTotalPrice())}</span>
                 </div>
 
-                <div className='flex flex-col gap-2'>
+                <div className='flex flex-col gap-2 pt-1'>
 
                     {
                         user
-                        ?   <Link >
-                    <button 
-                    disabled={cart.length < 1}
-                    onClick={handleSaveCart}
-                    className='bg-red-500 w-full 
-                    rounded-md text-white py-2 shadow-md hover:bg-red-700
-                    '>สั่งซื้อ</button>
-                    </Link>
+                        ?   <button
+                            disabled={cart.length < 1}
+                            onClick={handleSaveCart}
+                            className='bg-indigo-600 w-full rounded-lg text-white py-2.5 font-semibold
+                            shadow-sm hover:bg-indigo-700 transition-colors
+                            disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed'
+                            >สั่งซื้อ</button>
 
                         : <Link to={'/login'}>
-                    <button className='bg-blue-500 w-full 
-                    rounded-md text-white py-2 shadow-md hover:bg-blue-700
-                    '>Login</button>
-                    </Link>
+                            <button className='bg-indigo-600 w-full rounded-lg text-white py-2.5 font-semibold
+                            shadow-sm hover:bg-indigo-700 transition-colors'
+                            >เข้าสู่ระบบเพื่อสั่งซื้อ</button>
+                          </Link>
                     }
 
-                  
-                    
-
                     <Link to={'/shop'}>
-                    <button className='bg-gray-500 w-full 
-                    rounded-md text-white py-2 shadow-md hover:bg-gray-700
-                    '>แก้ไขรายการ</button>
+                    <button className='w-full rounded-lg text-slate-600 py-2.5 font-semibold
+                    border border-slate-200 hover:bg-slate-50 transition-colors'
+                    >แก้ไขรายการ</button>
                     </Link>
                 </div>
             </div>

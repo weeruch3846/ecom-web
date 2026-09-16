@@ -56,87 +56,87 @@ const SummaryCard = () => {
   console.log(products)
 
   return (
-    <div className='mx-auto'>
-        <div className='flex flex-wrap gap-4'>
+    <div className='max-w-5xl mx-auto p-4'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-5 items-start'>
                 {/* Left */}
-            <div className='w-2/4'>
-                <div className='bg-gray-100 p-4 rounded-md 
-                border shadow-md space-y-4'>
-                    <h1 className='font-bold text-lg'>ที่อยู่ในการจัดส่ง</h1>
-                    <textarea 
-                    required
-                    onChange={(e)=>setAddress(e.target.value)}
-                    placeholder='กรุณากรอกที่อยู่'
-                    className='w-full px-2 rounded-md'/>
-                    <button 
-                    onClick={hdlSaveAddress}
-                    className='bg-blue-500 text-white
-                    px-4 py-2 rounded-md shadow-md hover:bg-blue-700
-                    hover:scale-105 hover:translate-y-1 hover:duration-200'>
-                        Save Address</button>
+            <div className='bg-white border border-slate-200 rounded-2xl shadow-sm p-5 space-y-4'>
+                <div>
+                    <h1 className='font-semibold text-lg text-slate-800'>ที่อยู่ในการจัดส่ง</h1>
+                    <p className='text-sm text-slate-400 mt-0.5'>ใช้สำหรับจัดส่งสินค้าของคุณ</p>
                 </div>
+
+                <textarea
+                required
+                onChange={(e)=>setAddress(e.target.value)}
+                placeholder='กรุณากรอกที่อยู่'
+                rows={4}
+                className='w-full px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-700
+                placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400
+                focus:border-indigo-400 resize-none'/>
+
+                <button
+                onClick={hdlSaveAddress}
+                className='bg-indigo-600 text-white text-sm font-semibold
+                px-4 py-2.5 rounded-lg shadow-sm hover:bg-indigo-700 transition-colors'>
+                    บันทึกที่อยู่
+                </button>
+
+                {
+                    addressSaved &&
+                    <p className='text-xs text-emerald-600 flex items-center gap-1.5'>
+                        <span className='w-1.5 h-1.5 rounded-full bg-emerald-500' />
+                        บันทึกที่อยู่เรียบร้อยแล้ว
+                    </p>
+                }
             </div>
                 {/* Right */}
-            <div className='w-2/4'>
-                <div className='bg-gray-100 p-4 rounded-md 
-                border shadow-md space-y-4'>
-                    <h1 className='text-lg font-bold'>คำสั่งซื้อของคุณ</h1>
+            <div className='bg-white border border-slate-200 rounded-2xl shadow-sm p-5 space-y-4'>
+                <h1 className='text-lg font-semibold text-slate-800'>คำสั่งซื้อของคุณ</h1>
 
-                    {/* Item List */}
-
+                {/* Item List */}
+                <div className='divide-y divide-slate-100'>
                     {
                         products?.map((item,index)=>
-                        <div key={index}>
-                        <div className='flex justify-between items-end'>
+                        <div key={index} className='flex justify-between items-start py-2.5 first:pt-0'>
                             <div>
-                                <p className='font-bold'>{item.product.title}</p>
-                                <p className='text-sm'>จำนวน : {item.count} X {numberFormat(item.product.price)}</p>
+                                <p className='font-medium text-slate-700'>{item.product.title}</p>
+                                <p className='text-sm text-slate-400 mt-0.5'>จำนวน {item.count} x {numberFormat(item.product.price)}</p>
                             </div>
 
-                            <div>
-                                <p className='text-red-500 font-bold'>
-                                    {numberFormat(item.count * item.product.price)}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                        )
-                    }
-
-                    <div>
-                        <div className='flex justify-between'>
-                            <p>ค่าจัดส่ง:</p>
-                            <p>0.00</p>
-                        </div>
-                        <div className='flex justify-between'>
-                            <p>ส่วนลด:</p>
-                            <p>0.00</p>
-                        </div>
-                    </div>
-
-
-                    <div>
-                        <hr />
-                        <div className='flex justify-between'>
-                            <p className='font-bold'>ยอดรวมสุทธิ:</p>
-                            <p className='text-red-500 font-bold text-lg'>
-                                {numberFormat(cartTotal)}
+                            <p className='text-slate-700 font-semibold whitespace-nowrap'>
+                                {numberFormat(item.count * item.product.price)}
                             </p>
                         </div>
-                    </div>
-
-                    <hr />
-                    <div>
-                        <button
-                        onClick={hdlGoToPayment}
-                        // disabled = {!addressSaved}
-                        className='bg-green-400 w-full p-2 rounded-md
-                        shadow-md text-white hover:bg-green-600'>                    
-                            ดำเนินการชำระเงิน
-                        </button>
-                    </div>
-
+                        )
+                    }
                 </div>
+
+                <div className='space-y-1.5 text-sm border-t border-slate-100 pt-3'>
+                    <div className='flex justify-between text-slate-500'>
+                        <p>ค่าจัดส่ง</p>
+                        <p>0.00</p>
+                    </div>
+                    <div className='flex justify-between text-slate-500'>
+                        <p>ส่วนลด</p>
+                        <p>0.00</p>
+                    </div>
+                </div>
+
+                <div className='flex justify-between items-center border-t border-slate-100 pt-3'>
+                    <p className='font-semibold text-slate-800'>ยอดรวมสุทธิ</p>
+                    <p className='text-indigo-600 font-semibold text-xl'>
+                        {numberFormat(cartTotal)}
+                    </p>
+                </div>
+
+                <button
+                onClick={hdlGoToPayment}
+                // disabled = {!addressSaved}
+                className='bg-emerald-500 w-full py-2.5 rounded-lg
+                shadow-sm text-white font-semibold hover:bg-emerald-600 transition-colors'>
+                    ดำเนินการชำระเงิน
+                </button>
+
             </div>
         </div>
     </div>

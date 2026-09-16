@@ -28,96 +28,120 @@ const HistoryCard = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case "Not Process":
-        return "bg-gray-200";
+        return "bg-slate-100 text-slate-600";
       case "Processing":
-        return "bg-blue-200";
+        return "bg-blue-50 text-blue-600";
       case "Completed":
-        return "bg-green-200";
+        return "bg-emerald-50 text-emerald-600";
       case "Cancelled":
-        return "bg-red-200";
+        return "bg-rose-50 text-rose-600";
+      default:
+        return "bg-slate-100 text-slate-600";
+    }
+  };
+
+  const getStatusDot = (status) => {
+    switch (status) {
+      case "Not Process":
+        return "bg-slate-400";
+      case "Processing":
+        return "bg-blue-500";
+      case "Completed":
+        return "bg-emerald-500";
+      case "Cancelled":
+        return "bg-rose-500";
+      default:
+        return "bg-slate-400";
     }
   };
 
   return (
-    <div className="space-y-4">
-        <h1 className='text-2xl font-bold'>ประวัติการสั่งซื้อ</h1>
+    <div className="max-w-4xl mx-auto p-4 space-y-5">
+        <div>
+            <h1 className='text-xl font-semibold text-slate-800'>ประวัติการสั่งซื้อ</h1>
+            <p className='text-sm text-slate-400 mt-0.5'>ทั้งหมด {orders?.length ?? 0} รายการ</p>
+        </div>
 
         {/* คลุม */}
         <div className="space-y-4">
+
+            {
+                orders?.length === 0 &&
+                <div className='bg-white border border-slate-200 rounded-2xl shadow-sm p-10 text-center text-slate-400 text-sm'>
+                    ยังไม่มีประวัติการสั่งซื้อ
+                </div>
+            }
+
             {/* Card Loop Order*/}
             {orders?.map((item,index)=>{
                 // console.log(item)
                 return(
-                <div 
+                <div
                 key={index}
-                className='bg-gray-100 p-4 rounded-md shadow-md'>
+                className='bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden'>
                 {/* Header */}
-                <div className='flex justify-between mb-2'>
+                <div className='flex justify-between items-center px-5 py-4 border-b border-slate-100'>
                     <div>
-                        <p className='text-sm'>Order date</p>
-                        <p className='font-bold'>{dateFormat(item.updatedAt)}</p>
+                        <p className='text-xs text-slate-400'>วันที่สั่งซื้อ</p>
+                        <p className='font-medium text-slate-700'>{dateFormat(item.updatedAt)}</p>
                     </div>
 
-                    <div>
-                  <span className={`${getStatusColor(item.orderStatus)} 
-                  px-2 py-1 rounded-full`}>
-                    {item.orderStatus}
-                  </span>
+                    <span
+                    className={`${getStatusColor(item.orderStatus)} inline-flex items-center gap-1.5
+                    px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap`}
+                    >
+                        <span className={`w-1.5 h-1.5 rounded-full ${getStatusDot(item.orderStatus)}`} />
+                        {item.orderStatus}
+                    </span>
                 </div>
-              </div>
 
                 {/* table Loop Product*/}
-               <div>
-                    <table className='border w-full '>
+                <div className='overflow-x-auto'>
+                    <table className='w-full text-sm text-left'>
                     <thead>
-                    <tr className='bg-gray-200'>
-                        <th>สินค้า</th>
-                        <th>ราคา</th>
-                        <th>จำนวน</th>
-                        <th>รวม</th>
+                    <tr className='bg-slate-50 text-slate-500 uppercase text-xs tracking-wide'>
+                        <th className='px-5 py-2.5 font-medium'>สินค้า</th>
+                        <th className='px-5 py-2.5 font-medium'>ราคา</th>
+                        <th className='px-5 py-2.5 font-medium'>จำนวน</th>
+                        <th className='px-5 py-2.5 font-medium text-right'>รวม</th>
                     </tr>
                     </thead>
 
-                    <tbody>
-                    
+                    <tbody className='divide-y divide-slate-100'>
+
                     {
                         item.products?.map((product,index)=>{
                             return(
                             <tr key={index}>
-                                <td>{product.product.title}</td>
-                                <td>{numberFormat(product.product.price)}</td>
-                                <td>{product.count}</td>
-                                <td>
+                                <td className='px-5 py-2.5 text-slate-700'>{product.product.title}</td>
+                                <td className='px-5 py-2.5 text-slate-500'>{numberFormat(product.product.price)}</td>
+                                <td className='px-5 py-2.5 text-slate-500'>{product.count}</td>
+                                <td className='px-5 py-2.5 text-slate-700 font-medium text-right'>
                                     {numberFormat(
                                     product.count * product.product.price
                                     )}{" "}
                                 </td>
-                            </tr>  
+                            </tr>
                             )
                         })
                     }
-                    
 
                     </tbody>
-                    
+
                     </table>
                 </div>
 
                 {/* Total */}
-                <div>
-                    <div className="text-right">
-                        <p>ราคาสุทธิ</p>
-                        <p>{numberFormat(item.cartTotal)}</p>
-                    </div>
+                <div className='flex justify-end items-center gap-2 px-5 py-3.5 bg-slate-50/60 border-t border-slate-100'>
+                    <p className='text-sm text-slate-500'>ราคาสุทธิ</p>
+                    <p className='text-indigo-600 font-semibold text-lg'>{numberFormat(item.cartTotal)}</p>
                 </div>
 
-
-
                 </div>
- 
+
                 );
             })}
-           
+
 
         </div>
 
