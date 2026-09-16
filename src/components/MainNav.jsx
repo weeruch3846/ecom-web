@@ -5,7 +5,7 @@ import { Link, NavLink } from 'react-router-dom'
 import useEcomStore from '../store/ecom-store'
 import { ChevronDown } from "lucide-react";
 
-import logo from '../../../imges/Weeruch Logo.jpg'
+import logo from '../../public/imges/Weeruch Logo.jpg'
 function MainNav() {
     // Javascript
     const carts = useEcomStore((s)=> s.carts);
